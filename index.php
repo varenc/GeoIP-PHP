@@ -1,10 +1,5 @@
 <?php
 
-if (isset($_GET['raw'])) {
-	readfile($_SERVER["SCRIPT_FILENAME"]);
-	exit;
-}
-
 // wget https://github.com/maxmind/GeoIP2-php/releases/download/v2.11.0/geoip2.phar
 require_once 'geoip2.phar';
 
