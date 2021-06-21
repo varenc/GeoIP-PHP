@@ -1,5 +1,4 @@
 <?php
-
 // wget https://github.com/maxmind/GeoIP2-php/releases/download/v2.11.0/geoip2.phar
 require_once 'geoip2.phar';
 
@@ -24,7 +23,7 @@ $ip = get_remote_addr();
 // country
 $country = (new GeoIp2\Database\Reader('data/GeoLite2-Country.mmdb'))->country($ip);
 $country_name = $country->country->names['en'];
-$isoCode = $country->country->isoCode;
+$country_code = $country->country->isoCode;
 //$city_name = $country->country->names['zh-CN'];
 //$city_name = $city_name == $country_name ? '' : $city_name;
 // city
@@ -46,7 +45,7 @@ $asn_org = $asn->autonomousSystemOrganization;
 // connection-type
 $connection = (new GeoIp2\Database\Reader('data/GeoIP2-Connection-Type.mmdb'))->connectionType($ip);
 $connection_type = $connection->connectionType;
-$content = array ("ip"=>"$ip","country"=>"$country_name","isoCode"=>"$isoCode","city"=>"$city_name","isp"=>"$isp_name","isp_org"=>"$isp_org","asn"=>"AS$asn_number","asn_org"=>"$asn_org","connection_type"=>"$connection_type","network"=>"$network","user_agent"=>"$ua");
+$content = array ("ip"=>"$ip","country"=>"$country_name","country_code"=>"$country_code","city"=>"$city_name","isp"=>"$isp_name","isp_org"=>"$isp_org","asn"=>"AS$asn_number","asn_org"=>"$asn_org","connection_type"=>"$connection_type","network"=>"$network","user_agent"=>"$ua");
 $results = json_encode($content,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
 $result = stripslashes($results);
 
