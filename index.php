@@ -6,7 +6,6 @@ if (isset($_GET['raw'])) {
 }
 
 // wget https://github.com/maxmind/GeoIP2-php/releases/download/v2.11.0/geoip2.phar
-// wget https://phus.lu/server/GeoIP2-City.mmdb
 require_once 'geoip2.phar';
 
 function get_remote_addr()
