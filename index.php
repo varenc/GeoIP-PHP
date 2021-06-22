@@ -28,7 +28,8 @@ $country_code = $country->country->isoCode;
 //$city_name = $city_name == $country_name ? '' : $city_name;
 // city
 $city = (new GeoIp2\Database\Reader('data/GeoLite2-City.mmdb'))->city($ip);
-//$country_name = $city->country->names['zh-CN'];
+$region_name = $city->mostSpecificSubdivision->name;
+$region_code = $city->mostSpecificSubdivision->isoCode;
 $city_name = $city->city->names['en'];
 $city_name = $city_name == $country_name ? '' : $city_name;
 // isp
@@ -45,7 +46,7 @@ $asn_org = $asn->autonomousSystemOrganization;
 // connection-type
 $connection = (new GeoIp2\Database\Reader('data/GeoIP2-Connection-Type.mmdb'))->connectionType($ip);
 $connection_type = $connection->connectionType;
-$content = array ("ip"=>"$ip","country"=>"$country_name","country_code"=>"$country_code","city"=>"$city_name","isp"=>"$isp_name","isp_org"=>"$isp_org","asn"=>"AS$asn_number","asn_org"=>"$asn_org","connection_type"=>"$connection_type","network"=>"$network","user_agent"=>"$ua");
+$content = array ("ip"=>"$ip","country"=>"$country_name","country_code"=>"$country_code","region"=>"$region_name","region_code"=>"$region_code","city"=>"$city_name","isp"=>"$isp_name","isp_org"=>"$isp_org","asn"=>"AS$asn_number","asn_org"=>"$asn_org","connection_type"=>"$connection_type","network"=>"$network","user_agent"=>"$ua");
 $results = json_encode($content,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
 $result = stripslashes($results);
 
