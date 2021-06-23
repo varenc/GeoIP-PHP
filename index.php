@@ -1,4 +1,5 @@
 <?php
+
 // wget https://github.com/maxmind/GeoIP2-php/releases/download/v2.11.0/geoip2.phar
 require_once 'geoip2.phar';
 
@@ -47,13 +48,21 @@ $org = $asn->autonomousSystemOrganization;
 $connection = (new GeoIp2\Database\Reader('data/GeoIP2-Connection-Type.mmdb'))->connectionType($ip);
 $connection_type = $connection->connectionType;
 $content = array ("ip"=>"$ip","country"=>"$country_name","country_code"=>"$country_code","region"=>"$region_name","region_code"=>"$region_code","city"=>"$city_name","isp"=>"$isp_name","asn"=>"AS$asn_number","org"=>"$org","connection_type"=>"$connection_type","network"=>"$network","user_agent"=>"$ua");
-$results = json_encode($content,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
-$result = stripslashes($results);
+$text = "$ip $country_name $country_code $region_name $region_code $city_name $isp_name AS$asn_number $org $connection_type $network $ua";
+$result = json_encode($content,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+$json = stripslashes($result);
 
 header('access-control-allow-origin: *');
-header('content-type:application/json;charset=utf-8');
 header('cache-control: no-cache, no-store');
-//header('content-length: ' . strlen($content));
-//print($content);
 
-echo $result;
+if (isset($_GET['json'])) {
+			header('content-type:application/json;charset=utf-8');
+			echo $json;
+}
+if (isset($_GET['text'])) {
+			header('content-type:text/plain;charset=utf-8');
+			echo $text;
+}
+else{
+    echo $ip;
+}
