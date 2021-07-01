@@ -1,3 +1,4 @@
+<?php error_reporting(0); ?>
 <?php
 
 // wget https://github.com/maxmind/GeoIP2-php/releases/download/v2.11.0/geoip2.phar
@@ -20,7 +21,19 @@ function get_user_agent()
 }
 
 $ua = get_user_agent();
-$ip = get_remote_addr();
+
+if(is_array($_GET)&&count($_GET) > 0)
+    {
+        if((isset($_GET["ip"])) and (isset($_GET['ip']))!= (empty($_GET['ip'])))
+        {
+            $ip = $_GET["ip"];
+        } else {
+            $ip = get_remote_addr();
+        }
+    } else {
+        $ip = get_remote_addr();
+    }
+
 // country
 $country = (new GeoIp2\Database\Reader('data/GeoLite2-Country.mmdb'))->country($ip);
 $country_name = $country->country->names['en'];
@@ -42,13 +55,13 @@ $timezone = $city->location->timeZone;
 $isp = (new GeoIp2\Database\Reader('data/GeoIP2-ISP.mmdb'))->isp($ip);
 $isp_name = $isp->isp;
 #$org = $isp->organization;
-$network = $isp->network;
+//$network = $isp->network;
 #$isp_org = $isp->autonomousSystemOrganization;
 //asn
 $asn = (new GeoIp2\Database\Reader('data/GeoLite2-ASN.mmdb'))->asn($ip);
 $asn_number = $asn->autonomousSystemNumber;
 $org = $asn->autonomousSystemOrganization;
-
+$network = $asn->network;
 // connection-type
 $connection = (new GeoIp2\Database\Reader('data/GeoIP2-Connection-Type.mmdb'))->connectionType($ip);
 $connection_type = $connection->connectionType;
